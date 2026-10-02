@@ -28,14 +28,24 @@ if(isset($_GET['codigo'])){
     };
 };
 
+//Comprueba si $_POST tiene codigo y si es así recorre $arrayPersonas hasta que 
+//encuentra a alguien con el mismo codigo y le actualiza los datos
 if(isset($_POST['codigo'])){
+    $arrayActualizado=false;
+
     for($i=0; $i<count($arrayPersonas); $i++){
         if($arrayPersonas[$i]['codigo']==$_POST['codigo']){
             $arrayPersonas[$i]['nombre']=$_POST['nombre'];
             $arrayPersonas[$i]['apellidos']=$_POST['apellidos'];
             $arrayPersonas[$i]['edad']=$_POST['edad'];
             $arrayPersonas[$i]['profesion']=$_POST['profesion'];
+
+            $arrayActualizado=true;
         };
+    };
+
+    if($arrayActualizado=false){
+        $arrayPersonas[] = $_GET;
     };
 
     //Una vez realizado el cambio en $arrayPersonas hace que $_SESSION['arrayPersonas']
@@ -78,21 +88,37 @@ if(isset($_POST['codigo'])){
             };
             ?>
         </table>
-        <?php if(!isset($_GET['codigo'])){?>
-        <form method="">
-            <button name="add" type="submit">Añadir</button>
+        <?php if(!isset($_GET['codigo']) && !isset($_GET['add'])){?>
+        <form method="get">
+            <button name="add" type="submit" >Añadir</button>
         </form>
         <?php }?>
         <br><br>
         <!--
         Indica que el formulario ha de llamar al método post al pulsar el boton submit y los datos se guardaran en $_POST
         -->
+        <?php if(isset($_GET['codigo']) || isset($_GET['add'])){?>
         <form method="post">
             <div>
                 <!--
                 Pone el valor del codigo de $personaEditar en un imput oculto
                 -->
-                <input type="hidden" id="codigo" name="codigo" value="<?php echo($personaEditar['codigo'])?>">
+                <input type="hidden" id="codigo" name="codigo" value="<?php 
+                if(isset($_GET['codigo'])){
+                    echo($personaEditar['codigo']);
+                }else{
+                    $nuevoCodigo=0;
+
+                    foreach($arrayPersonas as $persona){
+
+                        if($persona['codigo']>$nuevoCodigo){
+                            $nuevoCodigo=$persona['codigo'];
+                        };
+                    };
+
+                    echo($nuevoCodigo+1);
+                };
+                ?>">
             </div>
             <div>
                 <label for="nombre">Nombre:</label>
@@ -113,7 +139,13 @@ if(isset($_POST['codigo'])){
                 <label for="profesion">Profesión:</label>
                 <input type="text" id="profesion" name="profesion" value="<?php echo($personaEditar['profesion'])?>">
             </div>
+            <?php if(isset($_GET['codigo'])){?>
             <button name="modify" type="submit">Modificar</button>
+            <?php }?>
+            <?php if(isset($_GET['add'])){?>
+            <button name="save" type="submit">Guardar</button>
+            <?php }?>
         </form>
+        <?php }?>
     </body>
 </html>
