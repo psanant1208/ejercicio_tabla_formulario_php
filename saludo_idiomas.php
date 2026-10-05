@@ -5,7 +5,15 @@ session_start();
 //que se muestre un saludo en un idioma u otro
 
 if(isset($_POST['language'])){
-    echo("fffffffffff");
+    if($_POST['language']=='espaniol'){
+        echo("Hola");
+    }
+    elseif($_POST['language']=='ingles'){
+        echo("Hello");
+    }
+    elseif($_POST['language']=='frances'){
+        echo("Bonjour");
+    };
 };
 ?>
 
@@ -18,7 +26,7 @@ if(isset($_POST['language'])){
     <body>
         <form method="post">
             <label for="language">IDIOMA: </label>
-            <select id="language">
+            <select id="language" name="language">
                 <option value="espaniol">Español</option>
                 <option value="ingles">Inglés</option>
                 <option value="frances">Frances</option>
