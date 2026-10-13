@@ -10,6 +10,8 @@ $arrrayProducts=[
     ["identification"=>6, "name"=>"Alfombrilla", "price"=>15, "category"=>"complemento", "stock"=>100]
 ];
 
+$arrayCart=[];
+
 $actualProduct = null;
 
 if(isset($_GET['identification'])){
@@ -38,6 +40,7 @@ foreach($arrrayProducts as $pro){
     <head>
         <meta charset="UTF-8">
         <title>saludo_idiomas</title>
+        <link rel="stylesheet" href="style.css">
     </head>
     <body>
         <nav class="menu">
@@ -47,7 +50,7 @@ foreach($arrrayProducts as $pro){
                 <!-- Mostrar formulario para introducir los datos de un nuevo producto para el catálogo -->
                 <li><a href="index.php?option=aniadir">Añadir producto</a></li>
                 <!--Mostrar cesta en la que habrá opciones para borrarla y comprar-->
-                <li><a href="#">Cesta</a></li>
+                <li><a href="index.php?option=carrito">Cesta</a></li>
             </ul>
         </nav>
         <?php if((!isset($_GET['option']) || $_GET['option']=='catalogo') && !isset($_GET['identification'])){ ?>
@@ -62,11 +65,15 @@ foreach($arrrayProducts as $pro){
                         '<tr>'.
                             '<th>'.'<a href="index.php?identification='.$pro['identification'].'">'.$pro['identification'].'</a>'.'</th>'.
                             '<th>'.$pro['name'].'</th>'.
+                            '<th><input type="checkbox"></th>'.
+                            '<th><input type="number"></th>'.
                         '</tr>'
                     );
                 };
                 ?>
             </table>
+            <br>
+            <button name="addCart" type="submit">Añadir al carrito</button>
         <?php } ?>
         <?php if(isset($_GET['identification'])){ ?>
             <table>
@@ -107,9 +114,24 @@ foreach($arrrayProducts as $pro){
                     <label for="newStock">Stock:</label>
                     <input type="text" id="newStock" name="newStock">
                     <br><br>
-                    <button name="add" type="submit">Añadir</button>
+                    <button name="addCatalog" type="submit">Añadir al catalogo</button>
                 </div>
             </form>
+        <?php } ?>
+        <?php if($_GET['option']=='carrito'){ ?>
+            <table>
+                <tr>
+                    <th>Codigo</th>
+                    <th>Nombre</th>
+                    <th>Cantidad</th>
+
+                </tr>
+            </table>
+            <?php 
+
+            ?>
+            <button name="buy" type="submit">Comprar</button>
+            <button name="erase" type="submit">Borrar</button>
         <?php } ?>
     </body>
 </html>
