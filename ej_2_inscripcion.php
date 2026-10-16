@@ -3,18 +3,24 @@ session_start();
 
 if(!isset($_SESSION['arrayActivities'])){
     $_SESSION['arrayActivities']=[
-        ["identificador"=>1, "nombre"=>"Robótica", "categoria"=>"Tecnologia", "plazas"=>4],
-        ["identificador"=>2, "nombre"=>"Programación", "categoria"=>"Tecnologia", "plazas"=>2],
-        ["identificador"=>3, "nombre"=>"Fotografía", "categoria"=>"Arte", "plazas"=>10],
-        ["identificador"=>4, "nombre"=>"Ajedrez", "categoria"=>"Recreación", "plazas"=>10],
-        ["identificador"=>5, "nombre"=>"Diseño 3D", "categoria"=>"Arte", "plazas"=>15],
-        ["identificador"=>6, "nombre"=>"Podcast", "categoria"=>"Recreación", "plazas"=>15]
+        ["identificador"=>1, "nombre"=>"Robótica", "categoria"=>"Tecnologia", "plazas"=>4, "arrayStudents"=>[]],
+        ["identificador"=>2, "nombre"=>"Programación", "categoria"=>"Tecnologia", "plazas"=>2, "arrayStudents"=>[]],
+        ["identificador"=>3, "nombre"=>"Fotografía", "categoria"=>"Arte", "plazas"=>10, "arrayStudents"=>[]],
+        ["identificador"=>4, "nombre"=>"Ajedrez", "categoria"=>"Recreación", "plazas"=>10, "arrayStudents"=>[]],
+        ["identificador"=>5, "nombre"=>"Diseño 3D", "categoria"=>"Arte", "plazas"=>15, "arrayStudents"=>[]],
+        ["identificador"=>6, "nombre"=>"Podcast", "categoria"=>"Recreación", "plazas"=>15, "arrayStudents"=>[]]
     ];
 };
 
 if(isset($_POST['check'])){
-    foreach($_POST['check'] as $num){
+    var_dump($_POST);
 
+    foreach($_POST['check'] as $num){
+        foreach($_SESSION['arrayActivities'] as $act){
+            if($act['identificador']==$num){
+                $act['arrayStudents'][]=[$_POST['studentName'], $_POST['studentCourse']];
+            };
+        };
     };
 };
 ?>
@@ -61,8 +67,19 @@ if(isset($_POST['check'])){
                     echo(
                         '<h1>'.$act['identificador'].' '.$act['nombre'].'</h1>'.
                         '<p>'.$act['categoria'].'</p>'.
-                        '<p>'.$act['plazas'].'</p>'
+                        '<p>'.$act['plazas'].'</p>'.
+                        '<table>
+                        <tr>
+                            <th>Nombre</th>
+                            <th>Curso</th>
+                        </tr>'
                     );
+
+                    if(isset($act['arrayStudents'])){
+                        foreach ($act['arrayStudents'] as $stu) {
+                            
+                        };
+                    };
                 };
             };
         }; ?>
