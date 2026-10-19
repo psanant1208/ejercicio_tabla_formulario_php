@@ -10,6 +10,22 @@ if(!isset($_SESSION['arrayRooms'])){
     ];
 };
 
+if(isset($_POST['arrayCheck'])){
+    foreach($_SESSION['arrayRooms'] as &$room){
+        foreach($_POST['arrayCheck'] as $cod){
+            if($cod==$room['codigo']){
+                if(!($room['capacidad']-count($room['arrayReservas'])==0)){
+                    $room['arrayReservas'][]=[$_POST['personName'], $_POST['personDep']];
+                }
+                else{
+                    echo('<p>No hay más espacio</p>');
+                };
+            };
+        };
+    };
+    unset($room);
+};
+
 ?>
 
 <!DOCTYPE html>
@@ -56,6 +72,27 @@ if(!isset($_SESSION['arrayRooms'])){
                     '<p>'.$room['tipo'].'</p>'.
                     '<p>'.($room['capacidad']-count($room['arrayReservas'])).'</p>'
                 );
+
+                if(count($room['arrayReservas'])>0){
+                    echo(
+                        '<table>
+                            <tr>
+                                <th>Nombre</th>
+                                <th>Departamento</th>
+                            <tr>'
+                    );
+
+                    foreach($room['arrayReservas'] as $res){
+                        echo(
+                            '<tr>
+                            <td>'.$res[0].'</td>'.
+                            '<td>'.$res[1].'</td>
+                            </tr>'
+                        );
+                    };
+
+                    echo('</table>');
+                };
             };
         };
         } ?>
