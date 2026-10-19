@@ -10,7 +10,6 @@ if(!isset($_SESSION['arrayRooms'])){
     ];
 };
 
-var_dump($_POST);
 ?>
 
 <!DOCTYPE html>
@@ -49,8 +48,16 @@ var_dump($_POST);
             <button type="submit" id="enroll" name="enroll">Enviar</button>
         </form>
         <?php } ?>
-        <?php if(!isset($_GET['codigo'])){
-        '<h1>'...'</h1>'
+        <?php if(isset($_GET['codigo'])){
+        foreach($_SESSION['arrayRooms'] as $room){
+            if($room['codigo']==$_GET['codigo']){
+                echo(
+                    '<h1>'.$room['codigo'].' '.$room['nombre'].'</h1>'.
+                    '<p>'.$room['tipo'].'</p>'.
+                    '<p>'.($room['capacidad']-count($room['arrayReservas'])).'</p>'
+                );
+            };
+        };
         } ?>
     <body>
 </html>
